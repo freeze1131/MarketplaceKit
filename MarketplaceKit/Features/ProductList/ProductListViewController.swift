@@ -9,12 +9,15 @@ import UIKit
 import SwiftUI
 
 final class ProductListViewController: UIViewController {
-
+    
+    let vm = ProductListViewModel()
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let vm = ProductListViewModel()
         let productListView = ProductListView(vm: vm)
+        
+        setupNavigationBar()
 
         view.backgroundColor = .systemBackground
         title = "Products"
@@ -33,6 +36,22 @@ final class ProductListViewController: UIViewController {
         ])
         hostingController.didMove(toParent: self)
         
+    }
+    
+    
+    private func setupNavigationBar() {
+        let addButton = UIBarButtonItem(
+            image: UIImage(systemName: "arrow.clockwise"),
+            style: .plain,
+            target: self,
+            action: #selector(retryButtonTapped)
+        )
+        navigationItem.rightBarButtonItem = addButton
+    }
+    
+    
+    @objc private func retryButtonTapped() {
+        vm.loadProducts()
     }
 }
 

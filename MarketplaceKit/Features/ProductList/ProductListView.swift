@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ProductListView: View {
     @ObservedObject var vm: ProductListViewModel
-    
+        
     var body: some View {
         Group {
             switch vm.state {
@@ -17,8 +17,8 @@ struct ProductListView: View {
                 Color.clear
             case .loading:
                 ProgressView("Loading...")
-            case .success:
-                List(vm.products) { product in
+            case .success(let products):
+                List(products) { product in
                     VStack(alignment: .leading, spacing: 4) {
                         Text(product.name)
                             .font(.headline)
@@ -29,9 +29,16 @@ struct ProductListView: View {
                     }
                     
                 }
-            case .error:
-                Text("Error loading products")
-                
+            case .error(let message):
+                VStack(spacing: 24) {
+                    Text(message)
+                        .font(.subheadline)
+                    Button("Retry") {
+                        vm.loadProducts()
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+
             }
         }.task{
             vm.loadProducts()
