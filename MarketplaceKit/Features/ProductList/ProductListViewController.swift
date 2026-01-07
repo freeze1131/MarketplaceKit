@@ -11,14 +11,14 @@ import SwiftUI
 final class ProductListViewController: UIViewController {
     
     let vm = ProductListViewModel()
-   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let productListView = ProductListView(vm: vm)
         
         setupNavigationBar()
-
+        
         view.backgroundColor = .systemBackground
         title = "Products"
         
