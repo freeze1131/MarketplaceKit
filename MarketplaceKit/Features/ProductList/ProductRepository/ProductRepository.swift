@@ -8,7 +8,7 @@
 import Foundation
 
 
-class ProductRepository {
+class ProductRepository: ProductRepositoryProtocol {
 
     let products = [
         Product(id: 1, name: "iPhone 15", price: 64999),

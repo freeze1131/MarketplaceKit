@@ -15,11 +15,14 @@ enum ViewState {
 
 @MainActor
 final class ProductListViewModel: ObservableObject {
+
     private var loadTask: Task<Void, Never>?
     @Published var state: ViewState = .idle
-    let productRepository = ProductRepository()
+    let productRepository: ProductRepositoryProtocol
     
-    init() {}
+    init(productProtocol: ProductRepositoryProtocol) {
+        self.productRepository = productProtocol
+    }
     
     func loadProducts()  {
         loadTask?.cancel()
