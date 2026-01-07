@@ -16,36 +16,26 @@ enum ViewState {
 @MainActor
 final class ProductListViewModel: ObservableObject {
     private var loadTask: Task<Void, Never>?
-    private(set) var currentRequestID: UUID = UUID()
     @Published var state: ViewState = .idle
+    let productRepository = ProductRepository()
     
     init() {}
     
-    func loadProducts() {
-        
+    func loadProducts()  {
         loadTask?.cancel()
+        self.state = .loading
         loadTask = Task {
-            
-            state = .loading
-            
             do {
-                try await Task.sleep(nanoseconds: 2 * 1_000_000_000)
+                let products = try await productRepository.loadProducts()
+                self.state = .success(products)
             } catch {
-                return // task is cancelled, return
+                self.state = .error("xd")
             }
-            
-            
-            let products = [
-                Product(id: 1, name: "iPhone 15", price: 64999),
-                Product(id: 2, name: "MacBook Pro", price: 89999),
-                Product(id: 3, name: "AirPods Pro", price: 12999)
-            ]
-            self.state = .success(products)
         }
     }
     
     func forceError() {
         loadTask?.cancel()
-        state = .error("Forced error")
+        self.state = .error("Forced error")
     }
 }
