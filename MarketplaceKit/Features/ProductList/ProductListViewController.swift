@@ -46,7 +46,20 @@ final class ProductListViewController: UIViewController {
             target: self,
             action: #selector(retryButtonTapped)
         )
+        
+        let leftButton = UIBarButtonItem(
+            image: UIImage(systemName: "arrow.2.circlepath.circle"),
+            style: .plain,
+            target: self,
+            action: #selector(forceErrorButtonTapped)
+        )
+        navigationItem.leftBarButtonItem = leftButton
+        
         navigationItem.rightBarButtonItem = addButton
+    }
+    
+    @objc private func forceErrorButtonTapped () {
+        vm.forceError()
     }
     
     
