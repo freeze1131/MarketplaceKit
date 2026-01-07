@@ -34,16 +34,15 @@ struct ProductListView: View {
                     Text(message)
                         .font(.subheadline)
                     Button("Retry") {
-                        vm.loadProducts()
+                        vm.send(.retryTapped)
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 
             }
-        }.task{
-            vm.loadProducts()
+        }.onAppear {
+            vm.send(.onAppear)
         }
-        
     }
 }
 

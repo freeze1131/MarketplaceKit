@@ -10,7 +10,7 @@ import SwiftUI
 
 final class ProductListViewController: UIViewController {
     
-    let vm = ProductListViewModel()
+    let vm = ProductListViewModel(productProtocol: MockRepository())
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,18 +53,18 @@ final class ProductListViewController: UIViewController {
             target: self,
             action: #selector(forceErrorButtonTapped)
         )
-        navigationItem.leftBarButtonItem = leftButton
+        //navigationItem.leftBarButtonItem = leftButton
         
         navigationItem.rightBarButtonItem = addButton
     }
     
     @objc private func forceErrorButtonTapped () {
-        vm.forceError()
+       // vm.forceError()
     }
     
     
     @objc private func retryButtonTapped() {
-        vm.loadProducts()
+        vm.send(.retryTapped)
     }
 }
 

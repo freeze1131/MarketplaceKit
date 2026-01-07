@@ -13,6 +13,10 @@ enum ViewState {
     case loading, success([Product]), error(String), idle
 }
 
+enum ProductListActions {
+    case onAppear, retryTapped
+}
+
 @MainActor
 final class ProductListViewModel: ObservableObject {
 
@@ -24,7 +28,16 @@ final class ProductListViewModel: ObservableObject {
         self.productRepository = productProtocol
     }
     
-    func loadProducts()  {
+    func send(_ action: ProductListActions) {
+        switch action {
+        case .onAppear:
+            loadProducts()
+        case .retryTapped:
+            loadProducts()
+        }
+    }
+    
+    private func loadProducts()  {
         loadTask?.cancel()
         self.state = .loading
         loadTask = Task {
@@ -37,7 +50,7 @@ final class ProductListViewModel: ObservableObject {
         }
     }
     
-    func forceError() {
+    private func forceError() {
         loadTask?.cancel()
         self.state = .error("Forced error")
     }
